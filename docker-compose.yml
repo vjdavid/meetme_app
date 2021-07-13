@@ -17,6 +17,7 @@ services:
       - db
     environment:
       - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+      - EDITOR=vim
     volumes:
       - .:/app
 

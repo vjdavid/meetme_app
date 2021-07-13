@@ -19,15 +19,19 @@ RUN apk add --update --virtual \
   file \
   git \
   tzdata \
+  vim \
   && rm -rf /var/cache/apk/*
 
 WORKDIR /app
-COPY . /app/
 
 ENV BUNDLE_PATH /gems
+COPY package.json yarn.lock /app/
 RUN yarn install
+
+COPY Gemfile Gemfile.lock /app/
 RUN bundle install
-RUN bundle exec rake assets:precompile
+
+COPY . /app/
 
 ENTRYPOINT ["bin/rails"]
 CMD ["s", "-b", "0.0.0.0"]
