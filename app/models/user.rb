@@ -4,10 +4,19 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[facebook]
 
+  validates :email, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
   def self.from_omniauth(auth)
-    name_split = auth.info.name.split(' ')
     user = User.where(email: auth.info.email).first
-    user ||= User.create!(provider: auth.provider, uid: auth.uid, last_name: name_split[0], first_name: name_split[1], email: auth.info.email, password: Devise.friendly_token[0, 20])
+    user ||= create_user(auth)
     user
+  end
+
+  def create_user(auth)
+    last_name, first_name = auth.info.name.split(' ')
+    User.create!(provider: auth.info.provider, uid: auth.info.uid, last_name: last_name, first_name: first_name,
+                 email: auth.info.email, password: Devise.friendly_token[0, 20])
   end
 end
