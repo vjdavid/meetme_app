@@ -20,6 +20,8 @@ services:
       - EDITOR=vim
     volumes:
       - .:/app
+      - gem_cache:/gems
 
 volumes:
   dbdata:
+  gem_cache:
