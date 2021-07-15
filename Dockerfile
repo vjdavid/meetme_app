@@ -34,6 +34,6 @@ RUN bundle install
 COPY . /app/
 
 ENTRYPOINT ["bin/rails"]
-CMD ["s", "-b", "0.0.0.0"]
+CMD ["s", "-b", "ssl://0.0.0.0?key=/app/localhost.key&cert=/app/localhost.crt"]
 
 EXPOSE 3000
